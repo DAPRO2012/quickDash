@@ -1,0 +1,44 @@
+:root {
+
+    /*Light Vars*/
+    --light-bg: white;
+    --light-color: black;
+
+    /*Dark Vars*/
+    --dark-bg: rgb(26, 26, 26);
+    --dark-color: white;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#sideBar {
+    position: fixed;
+    display: inline-block;
+    padding: 10px;
+    padding-right: 0;
+    width: 4vw;
+    height: calc(100vh - 20px);
+    box-shadow: 3px 0 5px rgb(223, 223, 223);
+    font-size: 0;
+    justify-items: center;
+    align-items: center;
+
+    transition: width 0.5s;
+    transition: font-size, 0.5s;
+
+}
+
+#sideBar:hover {
+    width: 12vw;
+    font-size: 20px;
+}
+
+#sideBar > a {
+    color: black;
+    text-decoration: none;
+        justify-items: center;
+    align-items: center;
+}
