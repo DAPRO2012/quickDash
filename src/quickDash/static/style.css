@@ -51,7 +51,7 @@ body {
     position: absolute;
     left: calc( var(--sidebar-width) + ( ( 100vw - 50vw ) / 2 ) );
     width: 50vw;
-    height: 100vw;
+    min-height: 100%;
 }
 
 .horizontal-bar-chart {
@@ -71,9 +71,7 @@ body {
     text-align: center;
 }
 
-.horizontal-bar-chart .chartTitle {
-    position: absolute;
-    top: 10px;
+.chartTitle {
     text-decoration: underline;
-    margin: 0;
+    margin-left: 5px;
 }
