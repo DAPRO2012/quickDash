@@ -9,12 +9,19 @@
             background-color: var(--{{theme}}-bg);
             color: var(--{{theme}}-color);
         }
+        #sideBar {
+            background-color: var(--{{theme}}-fg);
+        }
+        #content {
+            background-color: var(--{{theme}}-fg);
+        }
     </style>
-    <title>{%block title%}{%endblock%}</title>
+    <title>{{title}}</title>
 </head>
 <body>
     <nav id="sideBar" onresize="sideBarResize()">
         <a href="/"><img src="{{url_for('static', filename='homeIcon.svg')}}" alt="" width="50px">Home</a>
     </nav>
+    <div id="content">{{content}}</div>
 </body>
 </html>

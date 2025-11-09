@@ -1,12 +1,15 @@
 :root {
 
     /*Light Vars*/
-    --light-bg: white;
+    --light-bg: #EEEE;
     --light-color: black;
+    --light-fg: white;
 
     /*Dark Vars*/
     --dark-bg: rgb(26, 26, 26);
     --dark-color: white;
+
+    --sidebar-width: 4vw;
 }
 
 body {
@@ -19,7 +22,7 @@ body {
     display: inline-block;
     padding: 10px;
     padding-right: 0;
-    width: 4vw;
+    width: var(--sidebar-width);
     height: calc(100vh - 20px);
     box-shadow: 3px 0 5px rgb(223, 223, 223);
     font-size: 0;
@@ -32,7 +35,7 @@ body {
 }
 
 #sideBar:hover {
-    width: 12vw;
+    --sidebar-width: 10vw;
     font-size: 20px;
 }
 
@@ -41,4 +44,11 @@ body {
     text-decoration: none;
         justify-items: center;
     align-items: center;
+}
+
+#content {
+    position: absolute;
+    left: calc( var(--sidebar-width) + ( ( 100vw - 50vw ) / 2 ) );
+    width: 50vw;
+    height: 100vw;
 }
