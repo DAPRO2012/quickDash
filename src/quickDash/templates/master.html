@@ -15,12 +15,15 @@
         #content {
             background-color: var(--{{theme}}-fg);
         }
+        .horizontal-bar-chart::before {
+            background-color: var(--{{theme}}-fg);
+            border-color: var(--{{theme}}-data-outline);
+        }
     </style>
     <title>{{title}}</title>
 </head>
 <body>
     <nav id="sideBar" onresize="sideBarResize()">
-        <a href="/"><img src="{{url_for('static', filename='homeIcon.svg')}}" alt="" width="50px">Home</a>
     </nav>
     <div id="content">{{content|safe}}</div>
 </body>

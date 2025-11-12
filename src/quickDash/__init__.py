@@ -1,32 +1,33 @@
-from flask import Flask, render_template, session
-from collections.abc import Callable
+import flask
+from typing import Callable
 import os
 
 class Dashboard():
     def __init__(self, module_name, title="Dashboard") -> None:
-        self.app = Flask(module_name)
+        self.app = flask.Flask(module_name)
         self.title = title
         self.theme = "light"
         self.run = self.app.run
     
-
-class Page():
-    def __init__(self, dashboard: Dashboard, url: str, title: str) -> None:
-        self.dashboard = dashboard
-        self.title = title
-        self.content = ""
-        def mkPage():
-            return render_template("master.html", title=f"{self.dashboard.title} | {self.title}", content = self.content, theme = self.dashboard.theme)
-        mkPage.__name__ = self.title
-        self.dashboard.app.add_url_rule(url, self.title, mkPage)
-
-    def add_html(self, html: str):
-        self.content += html
+    def route(self, rule: str, **kwargs):
+        def decorator(f: Callable):
+            def mkPage():
+                return flask.render_template("master.html", title=f.__name__, content=f(), theme=self.theme)
+            self.app.add_url_rule(rule, f.__name__, mkPage, None, **kwargs)
+            return f
+        return decorator
 
 import data_representation
+import random
+
 dash = Dashboard(__name__)
-page1 = Page(dash, "/", "page1")
-testData = data_representation.data("Test", [1, 3, 4, 2])
-page1.add_html(testData.to_bar_chart(width=100))
+
+@dash.route("/", methods=["GET", "POST"])
+def Index():
+    if flask.request.method == "POST":
+        testdata = data_representation.data("Something", [int(flask.request.form.get("int1", "0")), int(flask.request.form.get("int2", "0"))])
+    else:
+        testdata = data_representation.data("Something", [1, 1])
+    return data_representation.form("form1", int1=int, int2=int)+testdata.to_bar_chart()
 
 dash.run(debug=True)

@@ -1,4 +1,5 @@
 from typing import overload, Union, Optional
+from itertools import cycle, islice
 
 class color:
     r: int
@@ -26,6 +27,9 @@ class color:
             self.b = b
         else:
             raise TypeError("Color must be initialized with (r, g, b) integers or a (hex) string.")
+        
+    def __str__(self) -> str:
+        return f"rgb({self.r} {self.g} {self.b})"
 
 
 class coordinates:
@@ -42,18 +46,35 @@ class data:
     def add_value(self, value: int | tuple[int, str]):
         self.values.append(value)
 
-    def to_bar_chart(self, accents: list[color] = [], height: int = 500, width: int = 100) -> str:
+    def to_bar_chart(self, accents: list[color] = [color(0, 128, 0)], height: int = 500, width: int = 100) -> str:
         html=""
         maxVal = 1
-        for value in self.values:
+        accent_cycle = cycle(accents)
+        accents_adjusted = list(islice(accent_cycle, len(self.values)))
+        print(accents_adjusted)
+        for index, value in enumerate(self.values):
+            print(index)
             if isinstance(value, tuple):
                 if value[0] > maxVal:
                     maxVal = value[0]
-                html += f"<div class='bar' style='background-color: rgb{accents[0]};'>{"<br>"*value[0]}{value[1]}</div>"
+                html += f"<div class='bar' style='background-color: {accents_adjusted[index]};'>{"<br>"*value[0]}{value[1]}</div>"
             else:
                 if value > maxVal:
                     maxVal = value
-                html += f"<div class='bar'>{"<br>"*value}</div>"
-        html = f"<h4 class='chartTitle'>{self.data_name}</h4><div class='horizontal-bar-chart' style='line-height: {height/maxVal}px; width: calc( {width}% - 10px - 7px - {len(self.values)*2}px );'>"+html
+                html += f"<div class='bar' style='background-color: {accents_adjusted[index]};'>{"<br>"*(value-1)}{value}</div>"
+        html = f"<div class='horizontal-bar-chart' style='line-height: {height/maxVal}px; width: calc( {width}% - 10px - 7px - {len(self.values)*2}px );' title='{self.data_name}'>"+html
         html += "</div>"
         return html
+    
+def form(form_id: str, **inputs: type) -> str:
+    html = f"<hr><form id='{form_id}' method='post' onchange='document.getElementById(\"{form_id}\").submit()'>"
+    for input in inputs:
+        input_type = inputs.get(input)
+        if input_type == str:
+            html += f"<input type='text' name='{input}' placeholder='{input}'>"
+        if input_type == int:
+            html += f"<input type='number' name='{input}' placeholder='{input}'>"
+    html += "</form>"
+
+    return html
+            
